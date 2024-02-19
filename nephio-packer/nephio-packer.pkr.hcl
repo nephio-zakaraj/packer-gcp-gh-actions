@@ -36,6 +36,7 @@ source "googlecompute" "nephio-packer" {
 build {
   sources = ["sources.googlecompute.nephio-packer"]
   provisioner "shell" {
+    expect_disconnect = "true"
     inline = [
       "echo '=============================================='",
       "echo 'APT INSTALL PACKAGES & UPDATES'",
@@ -53,10 +54,6 @@ build {
 
   provisioner "shell" {
     inline = [
-      "echo '=============================================='",
-      "echo 'CONFIGURE IMAGE SSH ACCESS'",
-      "echo '=============================================='",
-      "sudo mv /tmp/authorized_keys.packer /home/ubuntu/.ssh/authorized_keys",
       "echo '=============================================='",
       "echo 'INSTALL NEPHIO CORE'",
       "echo '=============================================='",
