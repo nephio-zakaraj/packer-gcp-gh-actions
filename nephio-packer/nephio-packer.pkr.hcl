@@ -63,6 +63,10 @@ build {
       "echo '=============================================='",
       "echo 'BUILD COMPLETE'",
       "echo '=============================================='"
+      "echo '=============================================='",
+      "echo 'CONFIGURE IMAGE SSH ACCESS'",
+      "echo '=============================================='",
+      "sudo mv /tmp/authorized_keys.packer /home/ubuntu/.ssh/authorized_keys",
     ]
   }
 }
