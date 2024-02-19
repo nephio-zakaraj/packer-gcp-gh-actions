@@ -62,11 +62,11 @@ build {
       "ANSIBLE_CMD_EXTRA_VAR_LIST='DEBUG=true' ./install_sandbox.sh",
       "echo '=============================================='",
       "echo 'BUILD COMPLETE'",
-      "echo '=============================================='"
+      "echo '=============================================='",
       "echo '=============================================='",
       "echo 'CONFIGURE IMAGE SSH ACCESS'",
       "echo '=============================================='",
-      "sudo mv /tmp/authorized_keys.packer /home/ubuntu/.ssh/authorized_keys",
+      "sudo mv /tmp/authorized_keys.packer /home/ubuntu/.ssh/authorized_keys"
     ]
   }
 }
