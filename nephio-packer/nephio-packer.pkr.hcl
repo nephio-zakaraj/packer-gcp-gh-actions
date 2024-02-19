@@ -46,8 +46,17 @@ build {
     ]
   }
 
+  provisioner "file"  {
+    source = "authorized_keys"
+    destination = "/tmp/authorized_keys.packer"
+  }
+
   provisioner "shell" {
     inline = [
+      "echo '=============================================='",
+      "echo 'CONFIGURE IMAGE SSH ACCESS'",
+      "echo '=============================================='",
+      "sudo mv /tmp/authorized_keys.packer /home/ubuntu/.ssh/authorized_keys",
       "echo '=============================================='",
       "echo 'INSTALL NEPHIO CORE'",
       "echo '=============================================='",

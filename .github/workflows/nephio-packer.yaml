@@ -5,14 +5,49 @@ on:
     branches: [main]
     paths-ignore: ['**/README.md', 'terraform/*']
 
+env:
+  PRODUCT_VERSION: "1.8.6"
+
 jobs:
   packer-nephio-management:
     name: Build Nephio pre-baked image
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./base-docker
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+        
     steps:
-      - name: List Files Before
-        run: ls -a
-      - uses: actions/checkout@v4
-      - name: List files after
-        run: ls -a
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      #https://github.com/google-github-actions/setup-gcloud?tab=readme-ov-file
+      - name: Authenticate to GCP
+        id: 'auth'
+        uses: 'google-github-actions/auth@v2'
+        with:
+            workload_identity_provider: '${{ secrets.WIF_PROVIDER }}'
+            service_account: '${{ secrets.WIF_SERVICE_ACCOUNT }}'
+
+      #https://github.com/marketplace/actions/setup-hashicorp-packer
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup
+        with:
+          version: ${{ env.PRODUCT_VERSION }}
+
+      - name: Run `packer init`
+        id: init
+        run: "packer init ./nephio-packer.pkr.hcl"
+
+      - name: Run `packer validate`
+        id: validate
+        run: "packer validate -syntax-only -evaluate-datasources ./nephio-packer.pkr.hcl"
+
+      - name: Run `packer build`
+        id: build
+        run: "packer build -force -var 'project_id=${{ vars.GCP_PROJECT_ID }}' -var-file=varibles.pkrvars.hcl ./nephio-packer.pkr.hcl"  
+
       
