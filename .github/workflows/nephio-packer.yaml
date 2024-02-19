@@ -1,0 +1,18 @@
+name: Nephio Packer Build
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['**/README.md', 'terraform/*']
+
+jobs:
+  packer-nephio-management:
+    name: Build Nephio pre-baked image
+    runs-on: ubuntu-latest
+    steps:
+      - name: List Files Before
+        run: ls -a
+      - uses: actions/checkout@v4
+      - name: List files after
+        run: ls -a
+      
